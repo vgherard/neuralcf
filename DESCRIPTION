@@ -1,0 +1,18 @@
+Package: neuralcf
+Title: Neural Collaborative Filtering
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Valerio",
+           family = "Gherardi",
+           role = c("aut", "cre"),
+           email = "vgherard@sissa.it",
+           comment = c(ORCID = "0000-0002-8215-3013"))
+Maintainer: Valerio Gherardi <vgherard@sissa.it>
+Description: Keras implementations for neural collaborative filtering.
+License: GPL (>= 3)
+Depends: keras
+Imports: R6
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1

@@ -8,7 +8,7 @@ Authors@R:
            email = "vgherard@sissa.it",
            comment = c(ORCID = "0000-0002-8215-3013"))
 Maintainer: Valerio Gherardi <vgherard@sissa.it>
-Description: Keras implementations for neural collaborative filtering.
+Description: Keras layers and models for neural collaborative filtering.
 License: GPL (>= 3)
 Depends: keras
 Imports: R6

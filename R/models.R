@@ -51,13 +51,15 @@ mlp_recommender <- function(
 					  output_dim = emb_dim[[2]])
 
 	mlp_input <- layer_concatenate(list(user_embedding, item_embedding))
+	mlp_input <- layer_flatten(mlp_input)
+
 
 	mlp_output <- layer_mlp(
 		mlp_input,
 		units = hid_units,
 		activation = hid_activation,
 		l2_penalty = hid_l2_penalty,
-		dropout = hid_dropout_rate,
+		dropout_rate = hid_dropout_rate,
 		name = "mlp"
 	)
 

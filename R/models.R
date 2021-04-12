@@ -68,5 +68,5 @@ mlp_recommender <- function(
 		kernel_regularizer = regularizer_l2(out_l2_penalty)
 		)
 
-	keras_model(list(user_input, user_output), output)
+	keras_model(list(user_input, item_input), output)
 }

@@ -36,9 +36,9 @@ MLPLayer <- R6::R6Class("MLPLayer",
 			for (i in seq_along(self$dense))
 			{
 				x <- self$dense[[i]](x)
-				dp <- self$dropout[[i]]
-				if (!is.null(dp))
-					x <- dp(x)
+				if (!is.null(self$dropout)) {
+					x <- self$dropout[[i]](x)
+				}
 			}
 			return(x)
 		},

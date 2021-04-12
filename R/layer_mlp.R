@@ -1,3 +1,4 @@
+# Basic R6 class for Multi-Layer Perceptron blocks
 MLPLayer <- R6::R6Class("MLPLayer",
 
 	inherit = keras::KerasLayer,
@@ -104,6 +105,7 @@ MLPLayer <- R6::R6Class("MLPLayer",
 	)
 )
 
+# Wrapper for MLP layer constructor
 #' @export
 layer_mlp <- function(
 	object,
@@ -115,6 +117,9 @@ layer_mlp <- function(
 	trainable = TRUE
 	)
 {
+	check_args_mlp(units, activation, l2_penalty, dropout_rate)
+	c(units, activation, l2_penalty, dropout_rate) %<-%
+		vectorize_args_mlp(units, activation, l2_penalty, dropout_rate)
 	keras::create_layer(
 		MLPLayer, object, list(units = units,
 				       activation = activation,
@@ -124,4 +129,40 @@ layer_mlp <- function(
 				       trainable = trainable
 				       )
 		)
+}
+
+check_args_mlp <- function(units, activation, l2_penalty, dropout_rate)
+{
+	tryCatch(
+		# try
+		assertthat::assert_that(
+			is_mlp_units(units),
+			is_activation(activation, len = length(units)),
+			is_l2_penalty(l2_penalty, len = length(units)),
+			is_dropout_rate(dropout_rate, len = length(units))
+		)
+		,
+		# catch
+		error = function(cnd)
+			rlang::abort(cnd$message, class = "domain_error")
+	)
+}
+
+vectorizer <- function(x, len) {
+	if (is.null(x))
+		return(x)
+	if (length(x) == 1)
+		return(replicate(len, x))
+	assertthat::assert_that(length(x) == len)
+	return(x)
+}
+
+vectorize_args_mlp <- function(units, activation, l2_penalty, dropout_rate)
+{
+	len <- length(units)
+	list(units,
+	     vectorizer(activation, len),
+	     vectorizer(l2_penalty, len),
+	     vectorizer(dropout_rate, len)
+	     ) # return
 }

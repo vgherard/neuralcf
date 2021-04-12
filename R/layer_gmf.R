@@ -3,26 +3,24 @@ GMFLayer <- R6::R6Class("GMFLayer",
 	inherit = keras::KerasLayer,
 
 	private = list(
+
+		# Layer defining variables
 		n = NULL,
 		emb_dim = NULL,
 		out_activation = NULL,
 		emb_l2_penalty = NULL,
 		out_l2_penalty = NULL,
 
+		# Layer weights
 		emb = list(),
 		dot_diag_metric = NULL,
 
-		l2_reg = function(l2_penalty) {
-			if (is.null(l2_penalty))
-				return(NULL)
-			return(regularizer_l2(l2_penalty))
-		},
-
+		# Utilities
 		emb_l2_reg = function(i) {
-			private$l2_reg(private$emb_l2_penalty[[i]])
+			.regularizer_l2(private$emb_l2_penalty[[i]])
 		},
 		out_l2_reg = function() {
-			private$l2_reg(private$out_l2_penalty)
+			.regularizer_l2(private$out_l2_penalty)
 		},
 
 		emb_shape = function(i) {

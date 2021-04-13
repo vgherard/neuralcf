@@ -4,6 +4,10 @@
 #include <utility>
 using namespace Rcpp;
 
+std::string make_key(size_t user_id, size_t item_id) {
+	return std::to_string(user_id) + "_" + std::to_string(item_id);
+}
+
 // [[Rcpp::export]]
 DataFrame add_negatives(
 		IntegerVector user_input,
@@ -20,13 +24,15 @@ DataFrame add_negatives(
 	// Build hash tables of positive items for each user
 	// Fare in funzione separata chiamata una sola volta;
 	// Sostituire vector<unordered_set<size_t>> con unordered_set<string>
-	std::vector<std::unordered_set<size_t> > positives(num_users);
+	std::unordered_set<std::string> positives;
 	size_t user_id, item_id;
 	for (size_t i = 0; i < num_positive; ++i) {
 		user_id = user_input[i];
 		item_id = item_input[i];
-		positives[user_id - 1].insert(item_id);
+		positives.insert( make_key(user_id, item_id) );
 	}
+
+	auto end_ptr = positives.end();
 	for (size_t i = 0; i < num_positive; ++i) {
 		user_id = user_input[i];
 		item_id = item_input[i];
@@ -35,14 +41,13 @@ DataFrame add_negatives(
 		item[pos] = item_id;
 		label[pos] = 1;
 
-		auto end_ptr = positives[user_id - 1].end();
 		for (size_t k = 1; k <= num_negatives; ++k) {
 			user[pos + k] = user_id;
 			label[pos + k] = 0;
 			while (true) {
 				item_id = sample(num_items, 1)[0];
-				auto ptr = positives[user_id - 1].find(item_id);
-				if (ptr == end_ptr) {
+				std::string key = make_key(user_id, item_id);
+				if (positives.find(key) == end_ptr) {
 					item[pos + k] = item_id;
 					break;
 				}

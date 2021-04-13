@@ -118,8 +118,10 @@ layer_mlp <- function(
 	)
 {
 	check_args_mlp(units, activation, l2_penalty, dropout_rate)
-	c(units, activation, l2_penalty, dropout_rate) %<-%
-		vectorize_args_mlp(units, activation, l2_penalty, dropout_rate)
+	len <- length(units)
+	c(activation, l2_penalty, dropout_rate) %<-%
+		vectorize_args(activation, l2_penalty, dropout_rate, len = len)
+
 	keras::create_layer(
 		MLPLayer, object, list(units = units,
 				       activation = activation,
@@ -146,23 +148,4 @@ check_args_mlp <- function(units, activation, l2_penalty, dropout_rate)
 		error = function(cnd)
 			rlang::abort(cnd$message, class = "domain_error")
 	)
-}
-
-vectorizer <- function(x, len) {
-	if (is.null(x))
-		return(x)
-	if (length(x) == 1)
-		return(replicate(len, x))
-	assertthat::assert_that(length(x) == len)
-	return(x)
-}
-
-vectorize_args_mlp <- function(units, activation, l2_penalty, dropout_rate)
-{
-	len <- length(units)
-	list(units,
-	     vectorizer(activation, len),
-	     vectorizer(l2_penalty, len),
-	     vectorizer(dropout_rate, len)
-	     ) # return
 }

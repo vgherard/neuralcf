@@ -23,6 +23,19 @@ is_mlp_units <- function(x) {
 	return(TRUE)
 }
 
+is_n_inputs <- function(x) {
+	assertthat::assert_that(is_positive_vector(x))
+	assertthat::assert_that(
+		all(x == as.integer(x)),
+		msg = paste(deparse(match.call()$x), "values must be integer.")
+	)
+	assertthat::assert_that(
+		length(x) == 2,
+		msg = paste(deparse(match.call()$x), "must have length 2."))
+	return(TRUE)
+}
+
+
 is_vectorizable <- function(x, len) {
 	assertthat::assert_that(
 		length(x) %in% c(1, len),
@@ -69,4 +82,28 @@ is_l2_penalty <- function(x, len = NULL) {
 	return(TRUE)
 }
 
-is_dropout_rate <- is_l2_penalty
+is_dropout_rate <- function(x, len = NULL) {
+	if (is.null(x))
+		return(TRUE)
+	assertthat::assert_that(is_positive_vector(x))
+	if (!is.null(len))
+		assertthat::assert_that(is_vectorizable(x, len))
+
+	assertthat::assert_that(
+		all(0 <= x & x <= 1),
+		msg = paste(deparse(match.call()$x), "must be between 0 and 1.")
+	)
+
+	return(TRUE)
+}
+
+is_emb_dim <- function(x, len = NULL) {
+	assertthat::assert_that(is_positive_vector(x))
+	if (!is.null(len))
+		assertthat::assert_that(is_vectorizable(x, len))
+	assertthat::assert_that(
+		all(x == as.integer(x)),
+		msg = paste(deparse(match.call()$x), "values must be integer.")
+	)
+	return(TRUE)
+}

@@ -8,22 +8,29 @@ gmf_recommender <- function(
 	out_l2_penalty = NULL
 	)
 {
-	gmf_input <- list(
+	input <- list(
 		layer_input(1L, name = "user_input", dtype = "int32"),
 		layer_input(1L, name = "item_input", dtype = "int32")
 		)
 
 	gmf_output <- layer_gmf(
-		gmf_input,
+		input,
 		n = c(num_users, num_items),
 		emb_dim = emb_dim,
-		dot_activation = out_activation,
 		emb_l2_penalty = emb_l2_penalty,
-		dot_l2_penalty = out_l2_penalty,
 		name = "gmf"
 		)
 
-	keras_model(gmf_input, gmf_output)
+
+	output <- layer_dense(
+		gmf_output,
+		units = 1L,
+		activation = out_activation,
+		kernel_initializer = "glorot_uniform",
+		kernel_regularizer = .regularizer_l2(out_l2_penalty)
+		)
+
+	keras_model(input, output)
 }
 
 #' @export
@@ -91,9 +98,7 @@ neumf_recommender <- function(
 	num_users,
 	num_items,
 	gmf_emb_dim,
-	gmf_dot_activation = NULL,
 	gmf_emb_l2_penalty = NULL,
-	gmf_dot_l2_penalty = NULL,
 	mlp_emb_dim,
 	mlp_hid_units = integer(0),
 	mlp_hid_activation = NULL,
@@ -123,9 +128,7 @@ neumf_recommender <- function(
 		input,
 		n = c(num_users, num_items),
 		emb_dim = gmf_emb_dim,
-		dot_activation = gmf_dot_activation,
 		emb_l2_penalty = gmf_emb_l2_penalty,
-		dot_l2_penalty = gmf_dot_l2_penalty,
 		name = "gmf"
 	)
 

@@ -20,9 +20,49 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// compute_average_ratings
+NumericVector compute_average_ratings(IntegerVector ids, NumericVector ratings);
+RcppExport SEXP _neuralcf_compute_average_ratings(SEXP idsSEXP, SEXP ratingsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type ids(idsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type ratings(ratingsSEXP);
+    rcpp_result_gen = Rcpp::wrap(compute_average_ratings(ids, ratings));
+    return rcpp_result_gen;
+END_RCPP
+}
+// compute_average_interactions
+NumericVector compute_average_interactions(IntegerVector ids, int num_objects);
+RcppExport SEXP _neuralcf_compute_average_interactions(SEXP idsSEXP, SEXP num_objectsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type ids(idsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_objects(num_objectsSEXP);
+    rcpp_result_gen = Rcpp::wrap(compute_average_interactions(ids, num_objects));
+    return rcpp_result_gen;
+END_RCPP
+}
+// return_average_prediction
+NumericVector return_average_prediction(IntegerVector ids, NumericVector preds, int num_ids);
+RcppExport SEXP _neuralcf_return_average_prediction(SEXP idsSEXP, SEXP predsSEXP, SEXP num_idsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type ids(idsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type preds(predsSEXP);
+    Rcpp::traits::input_parameter< int >::type num_ids(num_idsSEXP);
+    rcpp_result_gen = Rcpp::wrap(return_average_prediction(ids, preds, num_ids));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_neuralcf_add_negatives", (DL_FUNC) &_neuralcf_add_negatives, 5},
+    {"_neuralcf_compute_average_ratings", (DL_FUNC) &_neuralcf_compute_average_ratings, 2},
+    {"_neuralcf_compute_average_interactions", (DL_FUNC) &_neuralcf_compute_average_interactions, 2},
+    {"_neuralcf_return_average_prediction", (DL_FUNC) &_neuralcf_return_average_prediction, 3},
     {NULL, NULL, 0}
 };
 

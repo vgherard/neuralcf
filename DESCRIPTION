@@ -16,7 +16,8 @@ Depends:
 Imports: 
     Rcpp,
     R6,
-    tensorflow
+    tensorflow,
+    datastructures
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

@@ -5,3 +5,15 @@ add_negatives <- function(user_input, item_input, num_users, num_items, num_nega
     .Call(`_neuralcf_add_negatives`, user_input, item_input, num_users, num_items, num_negatives)
 }
 
+compute_average_ratings <- function(ids, ratings) {
+    .Call(`_neuralcf_compute_average_ratings`, ids, ratings)
+}
+
+compute_average_interactions <- function(ids, num_objects) {
+    .Call(`_neuralcf_compute_average_interactions`, ids, num_objects)
+}
+
+return_average_prediction <- function(ids, preds, num_ids) {
+    .Call(`_neuralcf_return_average_prediction`, ids, preds, num_ids)
+}
+

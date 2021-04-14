@@ -11,14 +11,8 @@ the R Keras interface.
 
 ## Installation
 
-You can install the released version of neuralcf from
-[CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("neuralcf")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the development version from
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -151,5 +145,5 @@ We finally evaluate on the remaining of the data:
 test <- data[-train_index, ]
 evaluate(model, x = list(test[["user"]], test[["item"]]), y = test[["rating"]])
 #>                loss  mean_squared_error mean_absolute_error 
-#>           0.9018048           0.8729320           0.7327452
+#>           0.9149609           0.8911576           0.7551823
 ```
